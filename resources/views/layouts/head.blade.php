@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <link rel="icon" type="image/x-icon" href="{{ asset('sources/data/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('sources/css/mercatavico.css') }}">
     @yield('late_head')

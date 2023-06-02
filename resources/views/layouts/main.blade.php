@@ -11,7 +11,6 @@
     @include('layouts.scripts')
 
     @yield('javascript')
-    @yield('vue-content')
 
     @include('layouts.footer')
 
