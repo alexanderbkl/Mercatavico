@@ -1,0 +1,113 @@
+@extends("layouts.main")
+@section("content")
+    <style>
+        p {
+            margin: unset;
+        }
+    </style>
+    <section class="video">
+        <video loop="true" autoplay="autoplay" muted>
+            <source src="{{asset('sources/data/mercatavico.mp4')}}" type="video/mp4">
+        </video>
+    </section>
+
+    <section class="titlemargin" id="slogan">
+        <h1>Mercatavico</h1>
+        <h2>Conoce el pasado</h2>
+    </section>
+
+    <br><br><br><br>
+
+    <h1 class="title">Nuestros productos</h1>
+    <br>
+    <div class="container">
+        <div class="row">
+            @foreach($productos as $producto)
+                <div class="col-12 col-md-4" style="margin-top: 40px">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-head">
+                            <img style="width:100%;height: 200px;object-fit: cover" src="{{asset('storage/productsImages/'.$producto->foto)}}">
+                        </div>
+                        <div class="card-body" style="text-align: start">
+                            <h3>{{$producto->title}}</h3>
+                            <p>{{\Illuminate\Support\Str::limit($producto->description,100)}}</p>
+                            <p>{{$producto->price}}€</p>
+                        </div>
+                        <div class="card-footer" style="text-align: center">
+                            <a class="btn btn-success" href="{{route('product.show',$producto->id)}}">Ver producto</a>
+                            @auth
+                                @if($producto->user->id!=\Illuminate\Support\Facades\Auth::id())
+                                <button type="button" data-product_id="{{$producto->id}}" class="btn btn-primary addCartBtn"><i class="fa fa-plus"></i> Añadir al carrito</button>
+                                @endif
+                            @endauth
+
+                        </div>
+
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    <div id="carrousel-content">
+        <div id="carrousel-box">
+            <div class="carrousel-element">
+                <a href="productos.html"><img class="images" src="{{asset('sources/data/varios.png')}}"
+                                              alt="varios"></a>
+            </div>
+            <div class="carrousel-element">
+                <a href="productos.html"><img class="images" src="{{asset('sources/data/deco.png')}}" alt="decoración"></a>
+            </div>
+            <div class="carrousel-element">
+                <a href="productos.html"><img class="images" src="{{asset('sources/data/mueble.png')}}"
+                                              alt="muebles"></a>
+            </div>
+        </div>
+    </div>
+
+
+    <!--//BLOQUE COOKIES-->
+      <div class="cookiesms" id="cookie1">
+        Esta web utiliza cookies, puedes ver nuestra  <a class="polit" href="{{route('cookies')}}">política de cookies</a>
+        .Si continúas navegando estás aceptándola
+        <button id="acept" onclick="controlcookies()">Aceptar</button>
+        <div  class="cookies2" onmouseover="document.getElementById('cookie1').style.bottom = '0px';">Política de cookies + </div>
+        </div>
+
+@endsection
+@section('javascript')
+    <script>
+        $('.addCartBtn').click((e)=>{
+            let product_id = e.currentTarget.dataset.product_id;
+            let url = '{{ route("cart.add", ":product_id") }}';
+            url = url.replace(':product_id', product_id);
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+                url: url,
+                type: 'get',
+                success: function (data) {
+                    $('#numItemsCart').text(data.numItems)
+                    toastr.success(data.message);
+                },
+                error: function (error) {
+                    toastr.error(error.responseJSON.message);
+                }
+            });
+        })
+
+        function controlcookies() {
+           // si variable no existe se crea (al clicar en Aceptar)
+           localStorage.controlcookie = (localStorage.controlcookie || 0);
+
+           localStorage.controlcookie++; // incrementamos cuenta de la cookie
+           cookie1.style.display='none'; // Esconde la política de cookies
+           }
+           if (localStorage.controlcookie>0){
+         const cookie1 = document.getElementById('cookie1');
+         if(cookie1)
+         cookie1.style.bottom = "-50px";
+       }
+    </script>
+
+@endsection
