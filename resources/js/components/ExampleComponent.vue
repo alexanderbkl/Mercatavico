@@ -1,5 +1,6 @@
 <template>
     <div>
+        <p>puta</p>
       <h1>{{ message }}</h1>
     </div>
   </template>

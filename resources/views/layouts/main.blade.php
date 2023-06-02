@@ -11,7 +11,7 @@
     @include('layouts.scripts')
 
     @yield('javascript')
-
+    @vite('resources/js/app.js')
     @include('layouts.footer')
 
 </body>
