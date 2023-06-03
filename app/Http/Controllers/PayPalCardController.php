@@ -87,7 +87,7 @@ class PayPalCardController extends Controller
                         'order_id' => $order->id,
                         'quantity' => $item->quantity,
                     ]);
-                    if ($item->product->user->rol->name == "usuario_registrado") {
+                    if ($item->product->user->rol == "usuario_registrado") {
                         $user = User::find($item->product->user->id);
                         $user->credits += ($item->product->price * $item->quantity) / 2;
                         $user->save();
@@ -160,7 +160,7 @@ class PayPalCardController extends Controller
                         'order_id' => $order->id,
                         'quantity' => $item->quantity,
                     ]);
-                    if ($item->product->user->rol->name == "usuario_registrado") {
+                    if ($item->product->user->rol == "usuario_registrado") {
                         $user = User::find($item->product->user->id);
                         $user->credits += ($item->product->price * $item->quantity) / 2;
                         $user->save();

@@ -286,14 +286,16 @@
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" type="submit" class="btn btn-primary" id="btnSaveProduct" data-dismiss="modal">Guardar
-                                producto</button>
-                        </div>
+
 
                     </form>
 
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveProduct" data-dismiss="modal">Guardar
+                        producto</button>
                 </div>
 
             </div>
@@ -389,50 +391,41 @@
         $(".file-upload").on('change', function() {
             readURL(this);
         });
-        $('#btnSaveProduct').click((e) => {
-            e.preventDefault();
-            var title = $('input[name="title"]').val();
 
-
-            var decripcion = $('textarea[name="descripcion"]').val();
-            var price = $('input[name="price"]').val();
-            var stock = $('input[name="stock"]').val();
-            var state = $('select[name="state"]').val();
-
-            let materiales = $('#inputSelectMateriales').val();
-
-
+        $('#btnSaveProduct').click(() => {
+            let data = new FormData();
+            data.append('title', $('input[name="title"]').val());
+            data.append('foto', $('input[name="foto"]')[0].files[0]);
+            data.append('descripcion', $('textarea[name="descripcion"]').val());
+            data.append('price', $('input[name="price"]').val());
+            data.append('stock', $('input[name="stock"]').val());
+            data.append('state', $('select[name="state"]').val());
+            data.append('materiales', $('#inputSelectMateriales').val());
+            data.append('_token', '{{ csrf_token() }}');
 
             $.ajax({
-                type: 'POST',
-                url: '{{ route("product.store") }}',
-                data: {
-                    title: title,
-                    descripcion: decripcion,
-                    price: price,
-                    stock: stock,
-                    state: state,
-                    materiales: materiales
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
+                url: '{{ route('product.store') }}',
+                type: 'post',
+                contentType: false,
+                processData: false,
+                data: data,
                 success: function(data) {
-
                     $('#contentProductos').html(data.view)
                     $('#addProduct')[0].reset();
                     $('.img-thumbnail').attr('src', 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png')
                     toastr.success(data.message);
-                    console.log(data)
                 },
                 error: function(error) {
-                    //log the csrf token
-                    console.log("{{ route('product.store') }}")
-                    console.log($('input[name="_token"]').val())
-                    console.log("{{ csrf_token() }}")
-                    console.log(error)
-                    alert("Error " + error.status + ": " + error.statusText);
+                    alert("Error " + error.status + ": " + error.statusText + "\n " + error
+                        .responseText);
                     toastr.error(error);
                 }
             });
         })
+
 
         $('#btnAddMaterial').click(() => {
             let data = new FormData();

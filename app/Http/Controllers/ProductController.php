@@ -26,8 +26,9 @@ class ProductController extends Controller
         try {
             $path = null;
             if($request->file('foto')){
-                $path = Str::random(15).time().$request->file('foto')->getClientOriginalExtension();
-                Storage::putFileAs('public/productsImages', $request->file('foto'), $path);
+                $path=Str::random(15).time().'.'.$request->file('foto')->getClientOriginalExtension();
+                $stored = Storage::putFileAs('public/productsImages', $request->file('foto'), $path);
+                Log::info('Stored: '.$stored);
             }
 
             $product = Product::create([
@@ -65,9 +66,9 @@ class ProductController extends Controller
 
     public function update(Request $request){
         $product = Product::find($request->product_id);
-        if($product->user_id==Auth::id() || Auth::user()->rol->name=='administrador'){
+        if($product->user_id==Auth::id() || Auth::user()->rol=='administrador'){
             if($request->file('foto')){
-                $path=Str::random(15).time().$request->file('foto')->getClientOriginalExtension();
+                $path=Str::random(15).time().'.'.$request->file('foto')->getClientOriginalExtension();
                 Storage::putFileAs('public/productsImages', $request->file('foto'),$path);
                 $product->foto = $path;
 
@@ -94,7 +95,7 @@ class ProductController extends Controller
             $product->stock = $request->stock;
             $product->state = $request->state;
             $product->save();
-            if(Auth::user()->rol->name=='administrador'){
+            if(Auth::user()->rol=='administrador'){
                 $userProducts = Product::all();
             }else{
                 $userProducts = User::find(Auth::id())->productos;
@@ -110,9 +111,9 @@ class ProductController extends Controller
 
     public function destroy(Request $request){
         $product = Product::find($request->product_id);
-        if($product->user_id==Auth::id() || Auth::user()->rol->name=='administrador'){
+        if($product->user_id==Auth::id() || Auth::user()->rol=='administrador'){
             $product->delete();
-            if(Auth::user()->rol->name=='administrador'){
+            if(Auth::user()->rol=='administrador'){
                 $userProducts = Product::all();
             }else{
                 $userProducts = User::find(Auth::id())->productos;

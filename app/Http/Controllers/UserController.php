@@ -16,10 +16,10 @@ class UserController extends Controller
         if($request->user_id == Auth::id()){
             return response()->json(['message'=>'No puedes cambiarte el rol a ti mismo.'],403);
         }
-        if(Auth::user()->rol->name=="administrador"){
+        if(Auth::user()->rol=="administrador"){
             $user = User::find($request->user_id);
             if($user){
-                if($user->rol->name=="administrador"){
+                if($user->rol=="administrador"){
                     $newRol = Rol::where('name','usuario_registrado')->first()->id;
                     $user->rol_id = $newRol;
                     $user->save();
@@ -79,7 +79,7 @@ class UserController extends Controller
 
     public function destroy(Request $request){
         $user = User::find($request->user_id);
-        if($user && Auth::user()->rol->name=="administrador"){
+        if($user && Auth::user()->rol=="administrador"){
             $user->delete();
             $usuarios = User::all();
             $html = view('profile._partial_usuarios',compact('usuarios'))->render();
