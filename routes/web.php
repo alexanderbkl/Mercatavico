@@ -66,6 +66,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/destroy-material', [MaterialController::class, 'destroy'])->name('material.destroy');
 
     Route::get('/carrito', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/get-products', [CartController::class, 'getProducts'])->name('get.products');
+
     Route::get('/add-cart/{productId}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/destroy-cart/', [CartController::class, 'destroy'])->name('cart.destroy');
 

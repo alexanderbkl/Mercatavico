@@ -7,43 +7,12 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class CartController extends Controller
 {
-    public function add($productId)
-    {
-        $producto = Product::find($productId);
-        if ($producto) {
-            if ($producto->stock > 0) {
-                $cart = Cart::where('user_id', Auth::id())->where('product_id', $productId)->first();
-                if ($cart) {
-                    $cart->quantity += 1;
-                    $cart->save();
-                } else {
-                    Cart::create([
-                        'user_id' => Auth::id(),
-                        'product_id' => $productId,
-                        'quantity' => 1,
-                    ]);
-                }
-                $producto->stock -= 1;
-                $producto->save();
-                $ItemsCart = Auth::user()->cartItems->pluck('quantity');
-                $numItems = 0;
-                foreach ($ItemsCart as $item) {
-                    $numItems += $item;
-                }
-                return response()->json(['status' => '', 'message' => 'Producto añadido al carrito.', 'numItems' => $numItems], 201);
-
-            }else{
-                return response()->json(['status' => '', 'message' => 'No quedan existencias de este producto.'], 404);
-            }
-        } else {
-            return response()->json(['status' => '', 'message' => 'No quedan existencias de este producto.'], 404);
-        }
-
-
-    }
+    
 
     public function index()
     {
@@ -52,19 +21,20 @@ class CartController extends Controller
         return view('cart.buy', compact('cartItems', 'totalAmount'));
     }
 
-    public function destroy(Request $request)
+
+    public function getProducts(Request $request)
     {
-        $cartItem = Cart::find($request->cart_id);
-        if ($cartItem && $cartItem->user_id == Auth::id()) {
-            $cartItem->product->stock += $cartItem->quantity;
-            $cartItem->product->save();
-            $cartItem->delete();
-            $cartItems = Auth::user()->cartItems;
 
-            $totalAmount = CartHelper::calcTotalAmount();
-            $html = view('cart._partial_cart', compact('cartItems', 'totalAmount'))->render();
-            return response()->json(['message' => 'Elemento eliminado correctamente.', 'view' => $html]);
-
+        try {
+            $productIds = $request->get('product_ids');
+            $products = Product::whereIn('id', $productIds)->get();
+            return response()->json($products);
+        } catch (Exception $e) {
+            // Log the error
+            Log::error($e);
+            // Respond with an error message
+            return response()->json(['error' => 'An error occurred while getting the products: ', $e], 500);
         }
+
     }
-}
+    }
