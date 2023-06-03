@@ -1,201 +1,96 @@
-@extends("layouts.main")
+@extends('layouts.main')
 @section('late_head')
-{!! RecaptchaV3::initJs() !!}
+    {!! RecaptchaV3::initJs() !!}
 @endsection
-@section("content")
-<style>
-.structurel label {
-    padding: 0px 12px 0px 0;
-    display: inline-block;
-}
+@section('content')
+    <style>
+        .structurel label {
+            padding: 0px 12px 0px 0;
+            display: inline-block;
+        }
 
-.controlinput {
-    border-radius: 3px;
-    box-shadow: 0 1px 3px rgba(197, 193, 192, 0) inset;
-    color: #6d6665;
-    margin: 0.0em 0;
-    border: 1px solid #c5c1c0;
-    padding: 0.6em 0.6em;
-    transition: box-shadow 300ms ease-out;
-}
+        .controlinput {
+            border-radius: 3px;
+            box-shadow: 0 1px 3px rgba(197, 193, 192, 0) inset;
+            color: #6d6665;
+            margin: 0.0em 0;
+            border: 1px solid #c5c1c0;
+            padding: 0.6em 0.6em;
+            transition: box-shadow 300ms ease-out;
+        }
 
-.control-label--showpass {
-    top: 50px;
-    left: 100%;
-}
+        .control-label--showpass {
+            top: 50px;
+            left: 100%;
+        }
 
-.structurel input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
+        .structurel input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
 
-.structurel input[type="email"] {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
-}
+        .structurel input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
 
-.usertitle {
-    color: black;
-}
+        .usertitle {
+            color: black;
+        }
 
-.control-label--showpass-c {
-    top: 50px;
-    left: 92%;
-    position: relative;
-}
-</style>
-<div class="structurel">
-    <h1 class="usertitle">Mercatavico</h1>
-    <h3 class="usertitle">Registro</h3>
-    <!--Print the entire errors object-->
-    @if($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            <!--Print all errors-->
-            @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-        <!--Print the first error-->
-        <p>{{ $errors->first('name') }}</p>
-    </div>
-    @endif
-    @if($errors->any())
-    {!! implode('', $errors->all('<div>:message</div>')) !!}
-    @endif
-    <div id="register-form">
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
-            <div class="fields">
-                <div class="row">
-                    <div class="col-md-6 col-12">
+        .control-label--showpass-c {
+            top: 50px;
+            left: 92%;
+            position: relative;
+        }
+    </style>
+    <div class="structurel">
+        <h1 class="usertitle">Mercatavico</h1>
+        <h3 class="usertitle">Registro</h3>
+        <!--Print the entire errors object-->
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    <!--Print all errors-->
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+                <!--Print the first error-->
+                <p>{{ $errors->first('name') }}</p>
+            </div>
+        @endif
+        @if ($errors->any())
+            {!! implode('', $errors->all('<div>:message</div>')) !!}
+        @endif
+        <div>
+            <form method="POST" action="{{ route('register') }}">
+                @csrf
+
+                <div id="register-component">
+                    <div class="fields">
+
                         <div>
-                            <label class="label" for="name">Nombre y apellidos</label>
-                            <input class="controlinput" type="text" id="name" name="name" maxlength="32" placeholder=" "
-                                autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
+                            <register-component></register-component>
                         </div>
-                        <div>
-                            <label class="label" for="name">Email</label>
-                            <input class="controlinput" type="email" id="email" name="email" maxlength="32"
-                                placeholder=" " autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
-                        <div>
-                            <label class="label" for="name">Direccion</label>
-                            <input class="controlinput" type="text" id="address" name="address" maxlength="32"
-                                placeholder=" " autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
+
                     </div>
-                    <div class="col-md-6 col-12">
-                        <div>
-                            <label class="label" for="name">Ciudad</label>
-                            <input class="controlinput" type="text" id="ciudad" name="ciudad" maxlength="32"
-                                placeholder=" " autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
-                        <div>
-                            <label class="label" for="name">Código postal</label>
-                            <input class="controlinput" type="text" id="cp" name="cp" maxlength="32" placeholder=" "
-                                autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-12">
-                        <div>
-
-                            <label class="control-label control-label--showpass" for="show-pass">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32"
-                                    class="svg-toggle-pass" title="Clave seguridad">
-                                    <path
-                                        d="M24,9A23.654,23.654,0,0,0,2,24a23.633,23.633,0,0,0,44,0A23.643,23.643,0,0,0,24,9Zm0,25A10,10,0,1,1,34,24,10,10,0,0,1,24,34Zm0-16a6,6,0,1,0,6,6A6,6,0,0,0,24,18Z" />
-                                    <rect x="20.133" y="2.117" height="44"
-                                        transform="translate(23.536 -8.587) rotate(45)" class="close-eye" />
-                                    <rect x="22" y="3.984" width="4" height="44"
-                                        transform="translate(25.403 -9.36) rotate(45)" style="fill:#fff"
-                                        class="close-eye" />
-                                </svg>
-                            </label>
-                            <label class="label" for="pass">Contraseña</label>
-                            <input class="controlinput controlinput--pass" type="password" id="pass" name="password"
-                                maxlength="32" pattern="[A-Za-z0-9]+" placeholder="" autocomplete="off"
-                                autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
-                        <div>
-
-                            <label class="control-label control-label--showpass-c" for="show-pass">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="32" height="32"
-                                    class="svg-toggle-pass" title="Clave seguridad">
-                                    <path
-                                        d="M24,9A23.654,23.654,0,0,0,2,24a23.633,23.633,0,0,0,44,0A23.643,23.643,0,0,0,24,9Zm0,25A10,10,0,1,1,34,24,10,10,0,0,1,24,34Zm0-16a6,6,0,1,0,6,6A6,6,0,0,0,24,18Z" />
-                                    <rect x="20.133" y="2.117" height="44"
-                                        transform="translate(23.536 -8.587) rotate(45)" class="close-eye" />
-                                    <rect x="22" y="3.984" width="4" height="44"
-                                        transform="translate(25.403 -9.36) rotate(45)" style="fill:#fff"
-                                        class="close-eye" />
-                                </svg>
-                            </label>
-                            <label class="label" for="pass">Repetir contraseña</label>
-                            <input class="controlinput controlinput--pass" type="password" id="passc"
-                                name="password_confirmation" maxlength="32" pattern="[A-Za-z0-9]+" placeholder=""
-                                autocomplete="off" autocapitalize="off" autocorrect="off" required>
-                            <ul class="errors"></ul>
-                        </div>
 
 
-
-
-
-
-                        <div>
-                            <style>
-                            .password-match-error {
-                                color: red;
-                                margin-top: 5px;
-                            }
-                            </style>
-
-                            <label class="label" for="pass">Contraseña</label>
-                            <input class="controlinput controlinput--pass" type="password" id="pass" name="password"
-                                maxlength="32" pattern="[A-Za-z0-9]+" placeholder="" autocomplete="off"
-                                autocapitalize="off" autocorrect="off" v-model="password" required>
-                            <ul class="errors"></ul>
-                        </div>
-                        <div>
-                            <label class="label" for="pass">Repetir contraseña</label>
-                            <input class="controlinput controlinput--pass" type="password" id="passc"
-                                name="password_confirmation" maxlength="32" pattern="[A-Za-z0-9]+" placeholder=""
-                                autocomplete="off" autocapitalize="off" autocorrect="off" v-model="passwordConfirmation"
-                                required>
-                            <ul class="errors"></ul>
-                            <!-- Display the password match status -->
-                            <p v-if="passwordConfirmation !== '' && password !== passwordConfirmation"
-                                class="password-match-error">
-                                Las contraseñas no coinciden
-                            </p>
-                        </div>
-
-
-
-
-
-                        <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
-                            {!! RecaptchaV3::field('register') !!}
-                            @if($errors->has('g-recaptcha-response'))
+                    <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                        {!! RecaptchaV3::field('register') !!}
+                        @if ($errors->has('g-recaptcha-response'))
                             <span class="help-block">
                                 <strong>Error:
                                     {{ $errors->first('g-recaptcha-response') }}</strong>
                             </span>
-                            @endif
-                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -205,36 +100,9 @@
                 <input class="send" type="submit" value="Registrarse">
                 <br>
                 <a href="{{ route('login') }}">¿Ya tienes una cuenta?</a>
-            </div>
+        </div>
         </form>
     </div>
-</div>
+    </div>
 
-@endsection
-@section('javascript')
-<script>
-$('.control-label--showpass').click((e) => {
-
-    if ($('input[name="password"]').attr('type') == 'text') {
-        $('input[name="password"]').attr('type', 'password')
-    } else {
-        $('input[name="password"]').attr('type', 'text')
-    }
-})
-$('.control-label--showpass-c').click((e) => {
-
-    if ($('input[name="password_confirmation"]').attr('type') == 'text') {
-        $('input[name="password_confirmation"]').attr('type', 'password')
-    } else {
-        $('input[name="password_confirmation"]').attr('type', 'text')
-    }
-})
-</script>
-
-<!--Vue code-->
-<script>
-import {
-    ref
-} from 'vue';
-</script>
 @endsection

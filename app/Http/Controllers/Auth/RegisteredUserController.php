@@ -38,8 +38,9 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'g-recaptcha-response' => 'required|recaptchav3:register,0.5'
         ], [
-            'validation.recaptchav3' => 'Captcha inválido',
+            'recaptchav3' => 'Captcha inválido',
             'confirmed' => 'Las contraseñas no coinciden',
+            'min.string' => 'La contraseña debe tener al menos 8 caracteres',
         ]);
 
         $user = User::create([

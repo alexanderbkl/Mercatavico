@@ -2,7 +2,7 @@
 <html lang="es">
 @include('layouts.head')
 
-<body>
+<body id="app">
 
     @include('layouts.header')
     @include('layouts.flash-message')
