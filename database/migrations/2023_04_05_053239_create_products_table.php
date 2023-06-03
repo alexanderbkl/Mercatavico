@@ -21,10 +21,10 @@ return new class extends Migration
           $table->string('description', 63);
           $table->string('foto', 200);
           $table->enum('status', ['pagado', 'rechazado', 'no pagado']);
-          $table->unsignedBigInteger('users_id');
+          $table->unsignedBigInteger('user_id');
           $table->timestamps();
 
-          $table->foreign('users_id')->references('id')->on('users');
+          $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

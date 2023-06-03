@@ -20,6 +20,8 @@ class ProductController extends Controller
     }
     public function store(Request $request){
 
+        dd($request->all());
+
         $path = null;
         if($request->file('foto')){
             $path=Str::random(15).time().$request->file('foto')->getClientOriginalExtension();

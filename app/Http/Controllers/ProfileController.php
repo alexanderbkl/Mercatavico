@@ -22,7 +22,7 @@ class ProfileController extends Controller
      */
     public function edit(): View
     {
-        if(Auth::user()->rol->name=='administrador'){
+        if(Auth::user()->rol == 'administrador'){
             $userProducts = Product::all();
             $pedidos = Order::all();
         }else{

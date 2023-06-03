@@ -18,8 +18,8 @@ return new class extends Migration
           $table->float('cred_total', 8, 2);
           $table->boolean('payback');
           $table->enum('calificate', ['muy malo', 'malo', 'bueno', 'muy bueno']);
-          $table->unsignedBigInteger('users_id');
-          $table->foreign('users_id')->references('id')->on('users');
+          $table->unsignedBigInteger('user_id');
+          $table->foreign('user_id')->references('id')->on('users');
           $table->timestamps();
         });
     }

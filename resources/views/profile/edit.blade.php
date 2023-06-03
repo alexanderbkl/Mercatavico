@@ -123,7 +123,7 @@
                 </div>
             </div>
             <div class="col-12" style="text-align: center;margin-top: 50px">
-                @if(\Illuminate\Support\Facades\Auth::user()->rol->name=="administrador")
+                @if(\Illuminate\Support\Facades\Auth::user()->rol == "administrador")
                     <h1>Todos los productos</h1>
                 @else
                     <h1>Mis productos</h1>
@@ -137,7 +137,7 @@
                         @include('profile._partial_mis_productos',$userProducts)
                     </div>
             </div>
-            @if(\Illuminate\Support\Facades\Auth::user()->rol->name=="administrador")
+            @if(\Illuminate\Support\Facades\Auth::user()->rol=="administrador")
                 <div class="col-12" style="text-align: center;margin-top: 50px">
                     <h1>Usuarios</h1>
                     <input type="search" class="form-control" placeholder="Buscar usuarios..." id="search_usuarios">
@@ -157,7 +157,7 @@
                 </div>
             @endif
             <div class="col-12" style="text-align: center;margin-top: 50px">
-                @if(\Illuminate\Support\Facades\Auth::user()->rol->name=="administrador")
+                @if(\Illuminate\Support\Facades\Auth::user()->rol =="administrador")
                 <h1>Todos los pedidos</h1>
                 @else
                     <h1>Mis pedidos</h1>
@@ -360,6 +360,8 @@
             data.append('stock', $('input[name="stock"]').val());
             data.append('state', $('select[name="state"]').val());
             data.append('materiales', $('#inputSelectMateriales').val());
+            data.append('_token', '{{csrf_token()}}');
+
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': '{{csrf_token()}}'

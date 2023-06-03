@@ -17,8 +17,8 @@ return new class extends Migration
           $table->id();
 		  $table->enum('shipping_preferences', ['Mañana', 'Tarde']);
           $table->enum('fav_pay', ['paypal', 'tarjeta']);
-          $table->unsignedBigInteger('users_id');
-          $table->foreign('users_id')->references('id')->on('users');
+          $table->unsignedBigInteger('user_id');
+          $table->foreign('user_id')->references('id')->on('users');
           $table->timestamps();
         });
     }

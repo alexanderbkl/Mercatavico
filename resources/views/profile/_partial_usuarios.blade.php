@@ -22,7 +22,7 @@
                 <td>{{$usuario->name}}</td>
                 <td>{{$usuario->email}}</td>
                 <td>{{$usuario->credits}}</td>
-                <td>{{$usuario->rol->name}}</td>
+                <td>{{$usuario->rol}}</td>
                 <td>{{$usuario->addressUser ?  $usuario->addressUser->address : ''}}</td>
                 <td>{{$usuario->addressUser ? $usuario->addressUser->city : ''}}</td>
                 <td>{{$usuario->addressUser ? $usuario->addressUser->cp : ''}}</td>
@@ -32,7 +32,7 @@
                                 data-name="{{$usuario->name}}"
                                 data-id="{{$usuario->id}}" data-email="{{$usuario->email}}"
                                 data-credits="{{$usuario->credits}}"
-                                data-rol="{{$usuario->rol->name}}"
+                                data-rol="{{$usuario->rol}}"
                                 data-address="{{$usuario->addressUser ? $usuario->addressUser->address : ''}}"
                                 data-city="{{$usuario->addressUser ? $usuario->addressUser->city : ''}}"
                                 data-cp="{{$usuario->addressUser ? $usuario->addressUser->cp : ''}}"
@@ -41,7 +41,7 @@
                         <button class="btn btn-danger deleteUser" data-id="{{$usuario->id}}" data-toggle="modal"
                                 data-target="#confirmDeleteUserModal">Eliminar
                         </button>
-                        @if($usuario->rol->name=="usuario_registrado")
+                        @if($usuario->rol=="miembro")
                             <button class="btn btn-warning btnSetAdmin" style="margin-top: 10px"
                                     data-id="{{$usuario->id}}">Convertir Administrador
                             </button>

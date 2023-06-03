@@ -18,13 +18,10 @@ class User extends Authenticatable
     protected $table = "users";
     protected $fillable = ['name','email','credits','rol','password'];
     public function addressUser(){
-        return $this->hasOne(UserAddress::class,'user_id');
+        return $this->hasOne(UserAddress::class);
     }
     public function productos(){
         return $this->hasMany(Product::class,'user_id','id');
-    }
-    public function rol(){
-        return $this->belongsTo(Rol::class,'rol','id');
     }
     public function cartItems(){
         return $this->hasMany(Cart::class,'user_id','id');

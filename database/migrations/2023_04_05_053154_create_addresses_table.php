@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('city', 64);
             $table->string('cp', 5);
             $table->string('address', 64);
+            $table->unsignedBigInteger('user_id')->nullable(); // Adding user_id foreign key
             $table->unsignedBigInteger('cities_id')->nullable(); // hacer que sea nullable
             $table->foreign('cities_id')->references('id')->on('cities');
+            $table->foreign('user_id')->references('id')->on('users'); // Adding user_id foreign key
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('addresses');
+        Schema::dropIfExists('user_addresses');
     }
 };
