@@ -19,7 +19,7 @@ return new class extends Migration
           $table->string('title', 32);
           $table->integer('stock');
           $table->string('description', 63);
-          $table->string('foto', 63);
+          $table->string('foto', 200);
           $table->enum('status', ['pagado', 'rechazado', 'no pagado']);
           $table->unsignedBigInteger('users_id');
           $table->timestamps();

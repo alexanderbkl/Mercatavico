@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
         ]);
 
 
-        $city = City::firstOrCreate(['name'=>$request->ciudad]);
+        $city = City::firstOrCreate(['province'=>$request->ciudad]);
 
 
         $address = UserAddress::create([

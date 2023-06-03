@@ -28,9 +28,6 @@ Route::get('/test', function () {
 
 //paypal
 
-Route::get('/vue-example', function () {
-    return view('vue-example');
-});
 
 
 Route::get('/', function () {
