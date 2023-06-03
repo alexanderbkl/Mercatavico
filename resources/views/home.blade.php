@@ -34,7 +34,8 @@
                             <p>{{$producto->price}}€</p>
                         </div>
                         <div class="card-footer" style="text-align: center">
-                            <a class="btn btn-success" href="{{route('product.show',$producto->id)}}">Ver producto</a>
+                            <!--añadir al carrito button-->
+                            <a class="btn btn-info m-2" href="{{route('product.show',$producto->id)}}">Ver producto</a>
                             @auth
                                 @if($producto->user->id!=\Illuminate\Support\Facades\Auth::id())
                                 <button type="button" data-product_id="{{$producto->id}}" class="btn btn-primary addCartBtn"><i class="fa fa-plus"></i> Añadir al carrito</button>
@@ -76,25 +77,39 @@
 @endsection
 @section('javascript')
     <script>
-        $('.addCartBtn').click((e)=>{
-            let product_id = e.currentTarget.dataset.product_id;
-            let url = '{{ route("cart.add", ":product_id") }}';
-            url = url.replace(':product_id', product_id);
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
-                },
-                url: url,
-                type: 'get',
-                success: function (data) {
-                    $('#numItemsCart').text(data.numItems)
-                    toastr.success(data.message);
-                },
-                error: function (error) {
-                    toastr.error(error.responseJSON.message);
-                }
+        $(document).ready(function() {
+            $('.addCartBtn').click(function(e) {
+                e.preventDefault();
+
+                var productId = $(this).data('product_id');
+
+                addToCart(productId);
+                displayNotification('Producto añadido al carrito correctamente.');
             });
-        })
+
+            function addToCart(productId) {
+                // Check if localStorage already contains a "cart" item
+                if (localStorage.getItem('cart')) {
+                    // If it exists, retrieve the current cart data and parse it
+                    var cart = JSON.parse(localStorage.getItem('cart'));
+                } else {
+                    // If it doesn't exist, initialize an empty cart array
+                    var cart = [];
+                }
+
+                // Add the product to the cart array
+                cart.push(productId);
+
+                // Store the updated cart array in localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+            }
+
+            function displayNotification(message) {
+                // Display an alert box to the user with the provided message
+                // In a real application, you should replace this with a nicer notification method
+                toastr.success(message);
+            }
+        });
 
         function controlcookies() {
            // si variable no existe se crea (al clicar en Aceptar)
@@ -108,6 +123,7 @@
          if(cookie1)
          cookie1.style.bottom = "-50px";
        }
+
     </script>
 
 @endsection
