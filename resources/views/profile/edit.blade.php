@@ -1,15 +1,19 @@
-@extends("layouts.main")
-@section("content")
+@extends('layouts.main')
+@section('content')
     <style>
         label {
             display: inline-block;
             margin-bottom: .1rem;
         }
+
         .card {
             text-align: center;
         }
-        .contenedor_datos{
-            margin-top: 50px;height: 50vh;overflow: auto;
+
+        .contenedor_datos {
+            margin-top: 50px;
+            height: 50vh;
+            overflow: auto;
         }
     </style>
     <div class="container">
@@ -18,7 +22,7 @@
                 <div class="card">
                     <div class="card-head" style="text-align: center">
                         <h1>Mis datos</h1>
-                        @if($errors->any())
+                        @if ($errors->any())
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li style="color:red;font-weight: bold">- {{ $error }}</li>
@@ -37,7 +41,7 @@
                                         </div>
                                         <div class="inputform">
                                             <input type="text" id="name" name="name" placeholder=""
-                                                   value="{{\Illuminate\Support\Facades\Auth::user()->name}}">
+                                                value="{{ \Illuminate\Support\Facades\Auth::user()->name }}">
                                         </div>
                                         <ul class="errors"></ul>
                                     </div>
@@ -46,7 +50,8 @@
                                             <label for="email">Correo</label>
                                         </div>
                                         <div class="inputform">
-                                            <input required type="text" id="email" name="email" value="{{Auth::user()->email}}">
+                                            <input required type="text" id="email" name="email"
+                                                value="{{ Auth::user()->email }}">
                                         </div>
                                         <ul class="errors"></ul>
                                     </div>
@@ -55,8 +60,8 @@
                                             <label for="password">Contraseña</label>
                                         </div>
                                         <div class="inputform">
-                                            <input type="password" id="password" autocomplete="new-password" name="password"
-                                                   placeholder=""><br>
+                                            <input type="password" id="password" autocomplete="new-password"
+                                                name="password" placeholder=""><br>
                                             <small>Dejar en blanco para mantener la misma</small>
                                         </div>
                                     </div>
@@ -66,7 +71,7 @@
                                         </div>
                                         <div class="inputform">
                                             <input type="password" id="password_c" autocomplete="new-password"
-                                                   name="password_confirmation"><br>
+                                                name="password_confirmation"><br>
                                             <small>Dejar en blanco para mantener la misma</small>
                                         </div>
                                     </div>
@@ -82,21 +87,21 @@
                                                 </div>
                                                 <div class="inputform">
                                                     <input required type="text" id="address" name="address"
-                                                           value="{{Auth::user()->addressUser ? Auth::user()->addressUser->address : ''}}">
+                                                        value="{{ Auth::user()->addressUser ? Auth::user()->addressUser->address : '' }}">
                                                 </div>
                                                 <div class="labelform">
                                                     <label for="ciudad">Ciudad</label>
                                                 </div>
                                                 <div class="inputform">
                                                     <input required type="text" id="ciudad" name="ciudad"
-                                                           value="{{Auth::user()->addressUser ? Auth::user()->addressUser->city : ''}}">
+                                                        value="{{ Auth::user()->addressUser ? Auth::user()->addressUser->city : '' }}">
                                                 </div>
                                                 <div class="labelform">
                                                     <label for="cp">Codigo postal</label>
                                                 </div>
                                                 <div class="inputform">
                                                     <input required type="text" id="cp" name="cp"
-                                                           value="{{Auth::user()->addressUser ? Auth::user()->addressUser->cp : ''}}">
+                                                        value="{{ Auth::user()->addressUser ? Auth::user()->addressUser->cp : '' }}">
                                                 </div>
                                             </fieldset>
                                         </div>
@@ -106,7 +111,7 @@
                                 <div class="col-12">
                                     <p>Mis puntos canjeables:
                                         <span style="font-size: 20px;font-weight: bold">
-                                            {{\Illuminate\Support\Facades\Auth::user()->credits}}
+                                            {{ \Illuminate\Support\Facades\Auth::user()->credits }}
                                         </span>
                                     </p>
                                 </div>
@@ -123,26 +128,26 @@
                 </div>
             </div>
             <div class="col-12" style="text-align: center;margin-top: 50px">
-                @if(\Illuminate\Support\Facades\Auth::user()->rol == "administrador")
+                @if (\Illuminate\Support\Facades\Auth::user()->rol == 'administrador')
                     <h1>Todos los productos</h1>
                 @else
                     <h1>Mis productos</h1>
-                     <h2>¡ Vende tus productos y gana la mitad del importe en puntos ! 1 punto = 1 euro</h2>
+                    <h2>¡ Vende tus productos y gana la mitad del importe en puntos ! 1 punto = 1 euro</h2>
                 @endif
                 <button class="btn btn-primary" data-toggle="modal" data-target="#modalAddProducts">Añadir
                     producto
                 </button>
-                    <input type="search" class="form-control" placeholder="Buscar productos..." id="search_productos">
-                    <div id="contentProductos" class="contenedor_datos">
-                        @include('profile._partial_mis_productos',$userProducts)
-                    </div>
+                <input type="search" class="form-control" placeholder="Buscar productos..." id="search_productos">
+                <div id="contentProductos" class="contenedor_datos">
+                    @include('profile._partial_mis_productos', $userProducts)
+                </div>
             </div>
-            @if(\Illuminate\Support\Facades\Auth::user()->rol=="administrador")
+            @if (\Illuminate\Support\Facades\Auth::user()->rol == 'administrador')
                 <div class="col-12" style="text-align: center;margin-top: 50px">
                     <h1>Usuarios</h1>
                     <input type="search" class="form-control" placeholder="Buscar usuarios..." id="search_usuarios">
                     <div id="contentUsers" style="margin-top: 50px">
-                        @include('profile._partial_usuarios',$usuarios)
+                        @include('profile._partial_usuarios', $usuarios)
                     </div>
                 </div>
 
@@ -152,13 +157,13 @@
                         material
                     </button>
                     <div id="contentMaterials" style="margin-top: 50px">
-                        @include('profile._partial_materials',$materials)
+                        @include('profile._partial_materials', $materials)
                     </div>
                 </div>
             @endif
             <div class="col-12" style="text-align: center;margin-top: 50px">
-                @if(\Illuminate\Support\Facades\Auth::user()->rol =="administrador")
-                <h1>Todos los pedidos</h1>
+                @if (\Illuminate\Support\Facades\Auth::user()->rol == 'administrador')
+                    <h1>Todos los pedidos</h1>
                 @else
                     <h1>Mis pedidos</h1>
                 @endif
@@ -166,29 +171,28 @@
                     <table class="table" id="tableOrders">
 
                         <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Transaccion</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Fecha</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">Usuario</th>
+                                <th scope="col">Transaccion</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Fecha</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @if(count($pedidos)>0)
-                            @foreach($pedidos as $pedido)
-                                <tr>
-                                    <td>{{$pedido->id}}</td>
-                                    <td>{{$pedido->user->name}}</td>
-                                    <td>{{$pedido->transaction}}</td>
-                                    <td>{{number_format($pedido->total,2,',','.')}}€</td>
-                                    <td>{{\Carbon\Carbon::parse($pedido->created_at)->format('d-m-Y H:i:s')}}</td>
-                                </tr>
-                            @endforeach
-                        @else
-                            <p>No hay pedidos</p>
-
-                        @endif
+                            @if (count($pedidos) > 0)
+                                @foreach ($pedidos as $pedido)
+                                    <tr>
+                                        <td>{{ $pedido->id }}</td>
+                                        <td>{{ $pedido->user->name }}</td>
+                                        <td>{{ $pedido->transaction }}</td>
+                                        <td>{{ number_format($pedido->total, 2, ',', '.') }}€</td>
+                                        <td>{{ \Carbon\Carbon::parse($pedido->created_at)->format('d-m-Y H:i:s') }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <p>No hay pedidos</p>
+                            @endif
 
                         </tbody>
                     </table>
@@ -199,7 +203,7 @@
 
     <!--  Modal Add product -->
     <div class="modal fade" id="modalAddProducts" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -210,44 +214,56 @@
                 </div>
                 <div class="modal-body">
                     <form id="addProduct">
+                        @csrf
                         <div class="row" style="width: 100%">
 
                             <div class="form-group col-12" style="text-align: center">
                                 <img style="width:200px" src="http://ssl.gstatic.com/accounts/ui/avatar_2x.png"
-                                     class="avatar img-circle img-thumbnail" alt="image">
+                                    class="avatar img-circle img-thumbnail" alt="image">
                                 <h6>Añade una foto</h6>
-                                <input type="file" name="foto" accept="image/*" class="text-center center-block file-upload">
+                                <input type="file" name="foto" accept="image/*"
+                                    class="text-center center-block file-upload">
                             </div>
                             <div class="form-group col-12 col-md-6">
 
                                 <div class="col-xs-6">
-                                    <label for="title"><h4>Titulo</h4></label>
+                                    <label for="title">
+                                        <h4>Titulo</h4>
+                                    </label>
                                     <input type="text" class="form-control" name="title" id="title">
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="col-xs-6">
-                                    <label for="last_name"><h4>Descripcion</h4></label>
+                                    <label for="last_name">
+                                        <h4>Descripcion</h4>
+                                    </label>
                                     <textarea type="text" class="form-control" name="descripcion"></textarea>
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
 
                                 <div class="col-xs-6">
-                                    <label for="phone"><h4>Precio</h4></label>
+                                    <label for="phone">
+                                        <h4>Precio</h4>
+                                    </label>
                                     <input type="number" required step="0.01" class="form-control" name="price">
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="col-xs-6">
-                                    <label for="mobile"><h4>Stock</h4></label>
-                                    <input  required type="number" step="1" class="form-control" name="stock">
+                                    <label for="mobile">
+                                        <h4>Stock</h4>
+                                    </label>
+                                    <input required type="number" step="1" class="form-control" name="stock">
                                 </div>
                             </div>
                             <div class="form-group col-12 col-md-6">
 
                                 <div class="col-xs-6">
-                                    <label for="email"><h4>Estado</h4></label>
+                                    <label for="email">
+                                        <h4>Estado</h4>
+                                    </label>
                                     <select class="form-control" name="state">
                                         <option value="Nuevo">Nuevo</option>
                                         <option value="Usado">Usado</option>
@@ -257,28 +273,40 @@
                             </div>
                             <div class="form-group col-12 col-md-6">
                                 <div class="col-xs-6">
-                                    <label for="state"><h4>Materiales (múltiple)</h4></label>
-                                    <select class="form-control" id="inputSelectMateriales" name="materiales" multiple="multiple">
-                                        @foreach($materials as $material)
-                                            <option value="{{$material->id}}">{{$material->name}}</option>
+                                    <label for="state">
+                                        <h4>Materiales (múltiple)</h4>
+                                    </label>
+                                    <select class="form-control" id="inputSelectMateriales" name="materiales"
+                                        multiple="multiple">
+                                        @foreach ($materials as $material)
+                                            <option value="{{ $material->id }}">{{ $material->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" type="submit" class="btn btn-primary" id="btnSaveProduct" data-dismiss="modal">Guardar
+                                producto</button>
+                        </div>
+
                     </form>
 
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnSaveProduct" data-dismiss="modal">Guardar producto</button>
-                </div>
+
             </div>
+
+
+
         </div>
     </div>
+    <p>{{ route('product.store') }}</p>
     <!-- Modal Add material-->
+
     <div class="modal fade" id="modalAddMaterial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -292,8 +320,11 @@
                         <div class="row" style="width: 100%">
                             <div class="form-group col-12 col-md-6">
                                 <div class="col-xs-6">
-                                    <label for="title"><h4>Nombre</h4></label>
-                                    <input type="text" class="form-control" name="add_product_name" id="product_name">
+                                    <label for="title">
+                                        <h4>Nombre</h4>
+                                    </label>
+                                    <input type="text" class="form-control" name="add_product_name"
+                                        id="product_name">
                                 </div>
                             </div>
                         </div>
@@ -302,7 +333,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnAddMaterial" data-dismiss="modal">Guardar material</button>
+                    <button type="button" class="btn btn-primary" id="btnAddMaterial" data-dismiss="modal">Guardar
+                        material</button>
                 </div>
             </div>
         </div>
@@ -310,6 +342,12 @@
 @endsection
 @section('javascript')
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            }
+        });
+
         $('#btn_submit_user').click(() => {
             let data = new FormData();
             data.append('name', $('input[name="name"]').val());
@@ -323,92 +361,100 @@
                 headers: {
                     'X-CSRF-TOKEN': $('input[name="_token"]').val()
                 },
-                url: '{{route('profile.update')}}',
+                url: '{{ route('profile.update') }}',
                 type: 'post',
                 contentType: false,
                 processData: false,
                 data: data,
-                success: function (data) {
+                success: function(data) {
                     toastr.success(data.message);
                 },
-                error: function (error) {
+                error: function(error) {
                     toastr.error(error.responseJSON.message);
                 }
             });
         })
 
-        var readURL = function (input) {
+        var readURL = function(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     $('.avatar').attr('src', e.target.result);
                 }
 
                 reader.readAsDataURL(input.files[0]);
             }
         }
-        $(".file-upload").on('change', function () {
+        $(".file-upload").on('change', function() {
             readURL(this);
         });
-        $('#btnSaveProduct').click(()=>{
-            let data = new FormData();
-            data.append('title', $('input[name="title"]').val());
-            data.append('foto', $('input[name="foto"]')[0].files[0]);
-            data.append('descripcion', $('textarea[name="descripcion"]').val());
-            data.append('price', $('input[name="price"]').val());
-            data.append('stock', $('input[name="stock"]').val());
-            data.append('state', $('select[name="state"]').val());
-            data.append('materiales', $('#inputSelectMateriales').val());
-            data.append('_token', '{{csrf_token()}}');
+        $('#btnSaveProduct').click((e) => {
+            e.preventDefault();
+            var title = $('input[name="title"]').val();
+
+
+            var decripcion = $('textarea[name="descripcion"]').val();
+            var price = $('input[name="price"]').val();
+            var stock = $('input[name="stock"]').val();
+            var state = $('select[name="state"]').val();
+
+            let materiales = $('#inputSelectMateriales').val();
+
+
 
             $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                type: 'POST',
+                url: '{{ route("product.store") }}',
+                data: {
+                    title: title,
+                    descripcion: decripcion,
+                    price: price,
+                    stock: stock,
+                    state: state,
+                    materiales: materiales
                 },
-                url: '{{route('product.store')}}',
-                type: 'post',
-                contentType: false,
-                processData: false,
-                data: data,
-                success: function (data) {
+                success: function(data) {
 
                     $('#contentProductos').html(data.view)
                     $('#addProduct')[0].reset();
-                    $('.img-thumbnail').attr('src','http://ssl.gstatic.com/accounts/ui/avatar_2x.png')
+                    $('.img-thumbnail').attr('src', 'http://ssl.gstatic.com/accounts/ui/avatar_2x.png')
                     toastr.success(data.message);
+                    console.log(data)
                 },
-                error: function (error) {
+                error: function(error) {
+                    //log the csrf token
+                    console.log("{{ route('product.store') }}")
+                    console.log($('input[name="_token"]').val())
+                    console.log("{{ csrf_token() }}")
+                    console.log(error)
+                    alert("Error " + error.status + ": " + error.statusText);
                     toastr.error(error);
                 }
             });
         })
 
-        $('#btnAddMaterial').click(()=>{
+        $('#btnAddMaterial').click(() => {
             let data = new FormData();
             data.append('material_name', $('input[name="add_product_name"]').val());
             $.ajax({
                 headers: {
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
-                url: '{{route('add.material')}}',
+                url: '{{ route('add.material') }}',
                 type: 'post',
                 contentType: false,
                 processData: false,
                 data: data,
-                success: function (data) {
+                success: function(data) {
                     $('#contentMaterials').html(data.view)
                     toastr.success(data.message);
                 },
-                error: function (error) {
-                    toastr.error(error.responseJSON.message);
+                error: function(error) {
+                    toastr.error(error);
                 }
             });
 
         })
-
-
-
     </script>
-
 @endsection

@@ -8,8 +8,10 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Exception;
 
 class ProductController extends Controller
 {
@@ -20,37 +22,45 @@ class ProductController extends Controller
     }
     public function store(Request $request){
 
-        dd($request->all());
-
-        $path = null;
-        if($request->file('foto')){
-            $path=Str::random(15).time().$request->file('foto')->getClientOriginalExtension();
-            Storage::putFileAs('public/productsImages', $request->file('foto'),$path);
-        }
-
-       $product = Product::create([
-            'user_id'=>Auth::id(),
-            'foto'=>$path,
-            'title'=>$request->title,
-            'description'=>$request->descripcion,
-            'price'=>$request->price,
-            'stock'=>$request->stock,
-            'state'=>$request->state,
-        ]);
-        if($request->materiales){
-            $materiales =  explode(',',$request->materiales);
-            foreach($materiales as $material_id){
-                MaterialPivot::create([
-                    'product_id'=>$product->id,
-                    'material_id'=>$material_id,
-                ]);
+        Log::info($request->all());
+        try {
+            $path = null;
+            if($request->file('foto')){
+                $path = Str::random(15).time().$request->file('foto')->getClientOriginalExtension();
+                Storage::putFileAs('public/productsImages', $request->file('foto'), $path);
             }
+
+            $product = Product::create([
+                'user_id' => Auth::id(),
+                'foto' => $path,
+                'title' => $request->title,
+                'description' => $request->descripcion,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'state' => $request->state,
+            ]);
+
+            if($request->materiales){
+                $materiales =  explode(',', $request->materiales);
+                foreach($materiales as $material_id){
+                    MaterialPivot::create([
+                        'product_id' => $product->id,
+                        'material_id' => $material_id,
+                    ]);
+                }
+            }
+
+            $userProducts = User::find(Auth::id())->productos;
+            $html = view('profile._partial_mis_productos', compact('userProducts'))->render();
+
+            return response()->json(['message' => 'Producto creado correctamente.', 'view' => $html]);
         }
-
-        $userProducts = User::find(Auth::id())->productos;
-        $html = view('profile._partial_mis_productos',compact('userProducts'))->render();
-
-        return response()->json(['message'=>'Producto creado correctamente.','view'=>$html]);
+        catch (Exception $e) {
+            // Log the error
+            Log::error($e);
+            // Respond with an error message
+            return response()->json(['error' => 'An error occurred while creating the product: ', $e], 500);
+        }
     }
 
     public function update(Request $request){

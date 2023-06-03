@@ -10,5 +10,6 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('sources/data/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('sources/css/mercatavico.css') }}">
     @yield('late_head')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 </head>
