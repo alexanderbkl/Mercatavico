@@ -60,7 +60,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol'=> 1,
+            'rol'=> 2,
             'addresses_id'=>$address->id, // asignar la id de la dirección creada
         ]);
 

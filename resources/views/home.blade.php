@@ -37,12 +37,12 @@
                         <div class="card-footer" style="text-align: center">
                             <!--añadir al carrito button-->
                             <a class="btn btn-info m-2" href="{{ route('product.show', $producto->id) }}">Ver producto</a>
-                            @auth
-                                @if ($producto->user->id == \Illuminate\Support\Facades\Auth::id())
+                            <!-- @ auth -->
+                                <!-- @ if ($producto->user->id == \Illuminate\Support\Facades\Auth::id()) -->
                                     <button type="button" data-product_id="{{ $producto->id }}"
                                         class="btn btn-primary addCartBtn"><i class="fa fa-plus"></i> Añadir al carrito</button>
-                                @endif
-                            @endauth
+                                <!-- @ endif -->
+                            <!-- @ endauth -->
 
                         </div>
 

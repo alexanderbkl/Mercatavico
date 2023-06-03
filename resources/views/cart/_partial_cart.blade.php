@@ -58,9 +58,17 @@
 
         // Remove the product from the cart
         delete cart[productId];
-
         // Update the cart in localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
+
+        console.log(cart)
+        //if cart is {}, then remove cart from localStorage
+        if (Object.keys(cart).length === 0) {
+            localStorage.removeItem('cart');
+            sessionStorage.removeItem('products');
+        } else {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
 
         // Reload the page to reflect the changes
         location.reload();

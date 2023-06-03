@@ -180,20 +180,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (count($pedidos) > 0)
-                                @foreach ($pedidos as $pedido)
+<!--
+                            @ if (count($pedidos) > 0)
+                                @ foreach ($pedidos as $pedido)
                                     <tr>
-                                        <td>{{ $pedido->id }}</td>
-                                        <td>{{ $pedido->user->name }}</td>
-                                        <td>{{ $pedido->transaction }}</td>
-                                        <td>{{ number_format($pedido->total, 2, ',', '.') }}€</td>
-                                        <td>{{ \Carbon\Carbon::parse($pedido->created_at)->format('d-m-Y H:i:s') }}</td>
+                                        <td> $pedido->id }}</td>
+                                        <td> $ pedido->user->name }}</td>
+                                        <td> $pedido->transaction }}</td>
+                                        <td> number_format($pedido->total, 2, ',', '.') }}€</td>
+                                        <td> \Carbon\Carbon::parse($pedido->created_at)->format('d-m-Y H:i:s') }}</td>
                                     </tr>
-                                @endforeach
-                            @else
+                                @ endforeach
+                            @ else
                                 <p>No hay pedidos</p>
-                            @endif
-
+                            @ endif
+                                -->
                         </tbody>
                     </table>
                 </div>

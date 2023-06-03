@@ -27,7 +27,7 @@ class ProfileController extends Controller
             $pedidos = Order::all();
         }else{
             $userProducts = Auth::user()->productos;
-            $pedidos = Auth::user()->orders;
+            #$pedidos = Auth::user()->orders;
         }
         $usuarios =User::all();
         $materiales =Material::all();
@@ -36,7 +36,7 @@ class ProfileController extends Controller
             'userProducts' =>$userProducts,
             'usuarios' =>$usuarios,
             'materials' =>$materiales,
-            'pedidos' =>$pedidos,
+            #'pedidos' =>$pedidos,
         ]);
     }
 
@@ -50,10 +50,12 @@ class ProfileController extends Controller
             'email'=>'required|email|max:250',
             'ciudad'=>'required|max:250',
             'cp'=>'required|max:10',
-        ],[],[
+        ],[
             'address'=>'Dirección',
             'ciudad'=>'Ciudad',
             'cp'=>'Código postal',
+            'min'=>'El campo :attribute debe tener al menos :min caracteres.',
+            'required'=>'El campo :attribute es obligatorio.',
         ]);
         $user = Auth::user();
         $user->name= $request->name;
