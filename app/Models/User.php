@@ -16,7 +16,7 @@ class User extends Authenticatable
         'remember_token',
     ];
     protected $table = "users";
-    protected $fillable = ['name','email','credits','rol_id','password'];
+    protected $fillable = ['name','email','credits','rol','password'];
     public function addressUser(){
         return $this->hasOne(UserAddress::class,'user_id');
     }
@@ -24,7 +24,7 @@ class User extends Authenticatable
         return $this->hasMany(Product::class,'user_id','id');
     }
     public function rol(){
-        return $this->belongsTo(Rol::class,'rol_id','id');
+        return $this->belongsTo(Rol::class,'rol','id');
     }
     public function cartItems(){
         return $this->hasMany(Cart::class,'user_id','id');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Rol;
 use App\Models\User;
 use App\Models\UserAddress;
@@ -32,30 +33,37 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        //Quitado del validate: 'g-recaptcha-response' => 'required|recaptchav3:register,0.5'
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'g-recaptcha-response' => 'required|recaptchav3:register,0.5'
         ], [
             'recaptchav3' => 'Captcha inválido',
             'confirmed' => 'Las contraseñas no coinciden',
             'min.string' => 'La contraseña debe tener al menos 8 caracteres',
         ]);
 
+
+        $city = City::firstOrCreate(['name'=>$request->ciudad]);
+
+
+        $address = UserAddress::create([
+            'address'=>$request->address,
+            'city'=>$request->ciudad,
+            'cp'=>$request->cp,
+            'cities_id'=>$city->id, // asignar la id del city creado/obtenido
+        ]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rol_id'=> Rol::where('name','usuario_registrado')->first()->id,
+            'rol'=> 1,
+            'addresses_id'=>$address->id, // asignar la id de la dirección creada
         ]);
 
-        UserAddress::create([
-            'user_id'=>$user->id,
-            'address'=>$request->address,
-            'city'=>$request->ciudad,
-            'cp'=>$request->cp,
-        ]);
 
         event(new Registered($user));
 

@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('addresses', function (Blueprint $table) {
-          $table->id();
-          $table->string('city', 64);
-          $table->string('cp', 5);
-          $table->string('address', 64);
-          $table->unsignedBigInteger('cities_id');
-		      $table->foreign('cities_id')->references('id')->on('cities');
-          $table->timestamps();
+        Schema::create('user_addresses', function (Blueprint $table) {
+            $table->id();
+            $table->string('city', 64);
+            $table->string('cp', 5);
+            $table->string('address', 64);
+            $table->unsignedBigInteger('cities_id')->nullable(); // hacer que sea nullable
+            $table->foreign('cities_id')->references('id')->on('cities');
+            $table->timestamps();
         });
     }
 
