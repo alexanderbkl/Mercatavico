@@ -92,25 +92,9 @@
             });
 
             function addToCart(productId) {
-                // Check if localStorage already contains a "cart" item
-                if (localStorage.getItem('cart')) {
-                    // If it exists, retrieve the current cart data and parse it
-                    var cart = JSON.parse(localStorage.getItem('cart'));
-                } else {
-                    // If it doesn't exist, initialize an empty cart object
-                    var cart = {};
-                }
+                var cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : {};
 
-                // Check if the product is already in the cart
-                if (cart.hasOwnProperty(productId)) {
-                    // If it exists, increment the quantity by 1
-                    cart[productId]++;
-                } else {
-                    // If it doesn't exist, set the quantity to 1
-                    cart[productId] = 1;
-                }
-
-                // Store the updated cart object in localStorage
+                cart[productId] = cart.hasOwnProperty(productId) ? cart[productId] + 1 : 1;
                 localStorage.setItem('cart', JSON.stringify(cart));
             }
 

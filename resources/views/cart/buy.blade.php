@@ -16,14 +16,9 @@
     <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
 
     <script>
-
         $(document).ready(function() {
-            // Assuming 'cart' is the key in the local storage
-            var cart = localStorage.getItem('cart');
-            if (cart) {
-                // Convert string to array
-                cart = JSON.parse(cart);
-                // Make an ajax request to get the products
+            var cart = JSON.parse(localStorage.getItem('cart')) || {};
+            if (Object.keys(cart).length) {
                 $.ajax({
                     url: '{{ route('get.products') }}',
                     method: 'POST',
@@ -31,13 +26,10 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     data: {
-                        product_ids: cart
+                        product_ids: Object.keys(cart)
                     },
                     success: function(response) {
-                        // The response will be the products array
-                        //save them to session
-                        let products = response;
-                        sessionStorage.setItem('products', JSON.stringify(products));
+                        sessionStorage.setItem('products', JSON.stringify(response));
                     },
                     error: function(error) {
                         console.log(error);

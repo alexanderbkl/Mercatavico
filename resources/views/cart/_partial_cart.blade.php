@@ -16,62 +16,53 @@
 
 <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 <script>
-    //if products fetched from buy.blade.php ajax in a const called products are not empty, which are saved in a session storage called products, log them
-    let products = JSON.parse(sessionStorage.getItem('products'))
-    if(products){
-        console.log(products)
-    }
+    let products = JSON.parse(sessionStorage.getItem('products')) || [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || {};
 
-    // Create an object to hold products count
-    let productCount = {};
+    products.forEach(product => {
+        let quantity = cart[product.id] || 0;
+        let subTotal = product.price * quantity;
 
-    products.forEach(item => {
-        if(!productCount[item.id]) {
-            productCount[item.id] = { count: 0, product: item };
-        }
-        productCount[item.id].count++;
-    });
-
-    console.log(products[0].title)
-
-    // Loop over the products count
-    for(let productId in productCount){
-        let productItem = productCount[productId].product;
-        let quantity = productCount[productId].count;
-
-        // Calculate subtotal
-        let subTotal = productItem.price * quantity;
-
-        // Create new row for each product
         let row = `
             <tr>
                 <td class="col-sm-8 col-md-6">
                     <div class="media">
                         <div class="thumbnail pull-left" style="margin-right: 25px">
-                            <img src="/Mercatavico/public/storage/productsImages/${productItem.foto}" style="width: 72px; height: 72px;object-fit: cover">
+                            <img src="/Mercatavico/public/storage/productsImages/${product.foto}" style="width: 72px; height: 72px;object-fit: cover">
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">${productItem.title}</h4>
-                            <h5 class="media-heading"> Vendido por <span>${productItem.user_id}</span></h5>
-                            <span>Estado: </span><span class="text-success"><strong>${productItem.state}</strong></span>
+                            <h4 class="media-heading">${product.title}</h4>
+                            <h5 class="media-heading"> Vendido por <span>${product.user_id}</span></h5>
+                            <span>Estado: </span><span class="text-success"><strong>${product.state}</strong></span>
                         </div>
-                    </div></td>
+                    </div>
+                </td>
                 <td class="col-sm-1 col-md-1" style="text-align: center">
                     ${quantity} unidades
                 </td>
-                <td class="col-sm-1 col-md-1 text-center"><strong>${productItem.price}€</strong></td>
+                <td class="col-sm-1 col-md-1 text-center"><strong>${product.price}€</strong></td>
                 <td class="col-sm-1 col-md-1 text-center"><strong>${subTotal}€</strong></td>
                 <td class="col-sm-1 col-md-1">
-                    <button type="button"  class="btn btn-danger deleteCartItem"  data-id="${productId}"  data-toggle="modal" data-target="#confirmDeleteCartModal">
+                    <button type="button"  class="btn btn-danger deleteCartItem"  data-id="${product.id}"  data-toggle="modal" data-target="#confirmDeleteCartModal">
                         <span class="glyphicon glyphicon-remove"></span> Eliminar
                     </button>
                 </td>
             </tr>
         `;
 
-        // Append the row to the table
         $('#productTable tbody').append(row);
-    }
+    });
 
-    // Rest of the JavaScript code remains same
+    $('.deleteCartItem').click(function() {
+        let productId = $(this).data('id');
+
+        // Remove the product from the cart
+        delete cart[productId];
+
+        // Update the cart in localStorage
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+        // Reload the page to reflect the changes
+        location.reload();
+    });
 </script>
